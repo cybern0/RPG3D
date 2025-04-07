@@ -1,0 +1,9 @@
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[ext_resource path="res://bin/UI.gdnlib" type="GDNativeLibrary" id=1]
+
+[resource]
+
+recource_name = "UI"
+class_name = "UI"
+library = ExtResource( 1 )

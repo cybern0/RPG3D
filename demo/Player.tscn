@@ -1,0 +1,99 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://katana.obj" type="ArrayMesh" id=1]
+[ext_resource path="res://bin/Camera.gdns" type="Script" id=2]
+[ext_resource path="res://player.obj" type="ArrayMesh" id=3]
+[ext_resource path="res://bin/Player.gdns" type="Script" id=4]
+[ext_resource path="res://pickup2.ogg" type="AudioStream" id=5]
+[ext_resource path="res://jump4.ogg" type="AudioStream" id=6]
+[ext_resource path="res://katanaSound.wav" type="AudioStream" id=7]
+
+[sub_resource type="CapsuleMesh" id=1]
+radius = 0.5
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.67451, 0.0431373, 0.92549, 1 )
+
+[sub_resource type="CapsuleShape" id=2]
+radius = 0.5
+
+[sub_resource type="Animation" id=5]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+resource_name = "attack"
+step = 0.0333333
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:rotation_degrees")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.333333, 0.633333, 1 ),
+"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Vector3( 0, 0, 0 ), Vector3( -45, 0, 0 ), Vector3( 45, 0, 0 ), Vector3( 0, 0, 0 ) ]
+}
+
+[node name="Player" type="KinematicBody"]
+script = ExtResource( 4 )
+
+[node name="MeshInstance" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1, 0 )
+mesh = SubResource( 1 )
+material/0 = SubResource( 3 )
+
+[node name="Player" type="MeshInstance" parent="MeshInstance"]
+transform = Transform( 9.55343e-16, 2.18557e-08, -0.5, 0.5, -2.18557e-08, 0, -2.18557e-08, -0.5, -2.18557e-08, 0, 0.25, -1.5 )
+mesh = ExtResource( 3 )
+skeleton = NodePath("../..")
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+transform = Transform( 1.5, 0, 0, 0, -6.55671e-08, -1.5, 0, 1.5, -6.55671e-08, 0, 1.5, 0 )
+shape = SubResource( 2 )
+
+[node name="cameraOrbit" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+script = ExtResource( 2 )
+
+[node name="Camera" type="Camera" parent="cameraOrbit"]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1, 1, -5 )
+
+[node name="weaponHolder" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.58, 1, 0.035 )
+
+[node name="Katana" type="MeshInstance" parent="weaponHolder"]
+transform = Transform( 0.5, 0, 0, 0, -2.18557e-08, 0.5, 0, -0.5, -2.18557e-08, 0, 1, 1 )
+mesh = ExtResource( 1 )
+skeleton = NodePath("../..")
+
+[node name="SwordAnimator" type="AnimationPlayer" parent="weaponHolder"]
+anims/RESET = SubResource( 5 )
+anims/attack = SubResource( 4 )
+
+[node name="attackRayCast" type="RayCast" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.3, 1, 0.6 )
+enabled = true
+cast_to = Vector3( 0, 0, 0.15 )
+
+[node name="Music" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 6 )
+
+[node name="Coin" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 5 )
+
+[node name="katana" type="AudioStreamPlayer3D" parent="."]
+stream = ExtResource( 7 )

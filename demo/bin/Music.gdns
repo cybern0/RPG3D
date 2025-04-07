@@ -1,0 +1,9 @@
+[gd_resource type="NativeScript" load_steps=2 format=2]
+
+[ext_resource path="res://bin/Music.gdnlib" type="GDNativeLibrary" id=1]
+
+[resource]
+
+resource_name = "Music"
+class_name = "Music"
+library = ExtResource( 1 )
